@@ -1,0 +1,22 @@
+.switchContainer {
+    border: solid 2px black;
+    border-radius: 5px;
+    padding: 0rem 0.3rem;
+    display: flex;
+    gap: 0.3rem;
+}
+
+.switchLight, .switchDark {
+    cursor: pointer;
+    color: rgb(209, 209, 209);
+}
+
+.switchLight:hover {
+    color: rgb(236, 236, 0);
+    cursor: pointer;
+}
+
+.switchDark:hover {
+    color: black;
+}
+

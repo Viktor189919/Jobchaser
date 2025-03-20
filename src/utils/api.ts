@@ -17,45 +17,46 @@ async function signup(userInfo : FormInputs) {
             })
         })
 
+        const data = await response.json();
+
         if (!response.ok) {
-            throw new Error("Error signing up");
+            data.message;
         }
 
-        const data = await response.json();
-        console.log(data.JWT)
+        return data;
 
     } catch (error) {
         console.error(`Error: ${error}`);
     }
 }
 
-async function signin(userInfo : FormInputs) {
+// async function signin(userInfo : FormInputs) {
     
-    const { email, password } = userInfo;
+//     const { email, password } = userInfo;
 
-    try {
+//     try {
         
-        const response = await fetch("https://localhost:3001/users/signin", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                email: email,
-                password: password,
-            })
-        })
+//         const response = await fetch("https://localhost:3001/users/signin", {
+//             method: "POST",
+//             headers: {
+//                 "Content-Type": "application/json"
+//             },
+//             body: JSON.stringify({
+//                 email: email,
+//                 password: password,
+//             })
+//         })
 
-        if (!response.ok) {
-            throw new Error("Error signing in")
-        }
+//         if (!response.ok) {
+//             throw new Error("Error signing in")
+//         }
 
-        const data = response.json();
-        console.log(data)
+//         const data = response.json();
+//         console.log(data)
     
-    } catch (error) {
-        console.error(`Error: ${error}`)
-    }
-}
+//     } catch (error) {
+//         console.error(`Error: ${error}`)
+//     }
+// }
 
-export { signup, signin };
+export { signup };

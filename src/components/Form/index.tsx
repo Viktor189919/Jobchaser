@@ -6,15 +6,33 @@ import { redirect } from "next/navigation"
 import { FormProps, FormInputs } from "@/types/formTypes"
 import styles from "@/components/Form/Form.module.css"
 
-export default function Form({ authUser } : FormProps) {
+export default function Form({ isSignup, authUser } : FormProps) {
 
     const { register, handleSubmit, formState: {errors}} = useForm<FormInputs>();
 
     const onSubmit: SubmitHandler<FormInputs> = async (data) => {
-        try {
-            authUser(data)
-            redirect("/")
-        }catch (error) {
+
+            try {
+                const result = await authUser(data)
+    
+                if (!result) {
+                    console.error("No response from server");
+                    // Insert react toast-maker
+                    return;
+                }
+    
+                if (isSignup) {
+    
+                    if (result.status !== 201) {
+                        // Insert react toast-maker
+                   
+                    } else {
+                        // Insert react toast-maker
+                        redirect("/signin")
+                    }
+                }
+
+        } catch (error) {
             console.error("Error", error)
         }    
     }

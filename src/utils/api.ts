@@ -1,4 +1,5 @@
 import { FormInputs } from "@/types/formTypes";
+import { ApiResponse } from "@/types/apiTypes";
 
 async function signup(userInfo : FormInputs) {
 
@@ -20,7 +21,8 @@ async function signup(userInfo : FormInputs) {
         const data = await response.json();
 
         if (!response.ok) {
-            data.message;
+            console.log(data.message)
+            return data.message;
         }
 
         return data;
@@ -30,33 +32,43 @@ async function signup(userInfo : FormInputs) {
     }
 }
 
-// async function signin(userInfo : FormInputs) {
+async function signin(userInfo : FormInputs) : Promise<ApiResponse | undefined> {
     
-//     const { email, password } = userInfo;
+    const { email, password } = userInfo;
 
-//     try {
+    try {
         
-//         const response = await fetch("https://localhost:3001/users/signin", {
-//             method: "POST",
-//             headers: {
-//                 "Content-Type": "application/json"
-//             },
-//             body: JSON.stringify({
-//                 email: email,
-//                 password: password,
-//             })
-//         })
+        const response = await fetch("http://localhost:3001/users/signin", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                email: email,
+                password: password,
+            })
+        })
 
-//         if (!response.ok) {
-//             throw new Error("Error signing in")
-//         }
+        if (!response) {
+            console.error("Signin - No response from server")
+            return
+        }
 
-//         const data = response.json();
-//         console.log(data)
+        const data = await response.json()
+
+        if (!response.ok) {
+            return data.message;
+        }
+
+        if (!data.JWT) {
+            return data.message;
+        }
+
+        return data;
     
-//     } catch (error) {
-//         console.error(`Error: ${error}`)
-//     }
-// }
+    } catch (error) {
+        console.error(`Error: ${error}`)
+    }
+}
 
-export { signup };
+export { signup, signin };

@@ -1,12 +1,14 @@
 "use client"
 
-import { useContext } from "react";
+import { ToastContainer, toast } from "react-toastify";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { FormProps, FormInputs } from "@/types/formTypes";
 import styles from "@/components/Form/Form.module.css";
 
 export default function Form({ isSignup, authUser } : FormProps) {
+
+    const notify = (msg : string) => toast(msg);
 
     const { register, handleSubmit, formState: {errors}} = useForm<FormInputs>();
     const router = useRouter();
@@ -15,42 +17,38 @@ export default function Form({ isSignup, authUser } : FormProps) {
         const result = await authUser(data)
 
         if (!result) {
-            // Insert toastify, unexpected error
+            notify("Unexpected error")
             return
+        }
+
+        if (result.status !== 201 && result.status !== 200) {
+            notify(result.message)
+            return;
         }
 
         if (isSignup) {
 
-            if (result.status !== 201) {
-                // Insert toastify
-                console.log("Not 201: ", result?.message)
+            console.log("Signup success", result.message)
+            notify(result.message)
+            setTimeout(() => {
+                router.push("/signin")
+            }, 2000)
+            return;
             
             } else {
 
-                console.log("Signup success", result.message)
-                setTimeout(() => {
-                    router.push("/signin")
-                }, 2000)
-                return;
-            }
-        } else {
-
-            if (result.status !== 200) {
-                // Insert toastify, result.message
-                return;
-
-            } else {
                 console.log(result.message)
-                // Insert toastify, result.message;
+                notify(result.message)
                 setTimeout(() => {
                     router.push("/")
                 }, 2000)
                 return;
             }
-        }
     }
 
     return ( 
+
+        <>
         <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
             
             <fieldset className={styles.fieldset}>
@@ -80,5 +78,7 @@ export default function Form({ isSignup, authUser } : FormProps) {
             </fieldset>
             <input className={styles.submitInput} type="submit" />
         </form>
+        <ToastContainer />
+        </>
     )
 }   

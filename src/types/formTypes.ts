@@ -1,6 +1,8 @@
+import { ApiResponse } from "./apiTypes";
+
 export type FormProps = {
     isSignup : boolean;
-    authUser : (userInfo : FormInputs) => Promise<ApiResponse | undefined>;
+    authUser : (userInfo : FormInputs) => Promise<ApiResponse | void | undefined>;
 }
 
 export type FormInputs = {
@@ -9,12 +11,6 @@ export type FormInputs = {
     error: {
         message: string;
     }
-}
-
-export type ApiResponse = {
-    status : number;
-    message : string;
-    access_token? : string;
 }
 
 

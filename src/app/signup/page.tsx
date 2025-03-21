@@ -4,7 +4,7 @@ import Form from "@/components/Form"
 import { signup } from "@/utils/api" 
 import styles from "@/styles/SignupPage.module.css"
 
-export default function SignUpPage() {
+function SignUpPage() {
 
     return (
         <>
@@ -13,3 +13,5 @@ export default function SignUpPage() {
         </>
     )
 }
+
+export default SignUpPage;

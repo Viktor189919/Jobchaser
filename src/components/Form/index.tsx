@@ -1,36 +1,41 @@
 "use client"
 
-import { useContext } from "react"
-import { useForm, SubmitHandler } from "react-hook-form"
-import { redirect } from "next/navigation"
-import { FormProps, FormInputs } from "@/types/formTypes"
-import styles from "@/components/Form/Form.module.css"
+import { useContext } from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { useRouter } from "next/navigation";
+import { FormProps, FormInputs } from "@/types/formTypes";
+import styles from "@/components/Form/Form.module.css";
 
 export default function Form({ isSignup, authUser } : FormProps) {
 
     const { register, handleSubmit, formState: {errors}} = useForm<FormInputs>();
-
+    const router = useRouter();
     const onSubmit: SubmitHandler<FormInputs> = async (data) => {
 
-            try {
-                const result = await authUser(data)
-    
-                if (!result) {
-                    console.error("No response from server");
+        try {
+            const result = await authUser(data)
+
+            if (!result) {
+                console.error("No response from server");
+                // Insert react toast-maker
+                return;
+            }
+
+
+            if (isSignup) {
+
+                if (result.status !== 201) {
                     // Insert react toast-maker
+                
+                } else {
+
+                    // Insert react toast-maker
+                    router.push("/signin")
                     return;
                 }
-    
-                if (isSignup) {
-    
-                    if (result.status !== 201) {
-                        // Insert react toast-maker
-                   
-                    } else {
-                        // Insert react toast-maker
-                        redirect("/signin")
-                    }
-                }
+            } 
+
+            router.push("/")
 
         } catch (error) {
             console.error("Error", error)

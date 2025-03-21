@@ -14,21 +14,40 @@ export default function Form({ isSignup, authUser } : FormProps) {
 
         const result = await authUser(data)
 
+        if (!result) {
+            // Insert toastify, unexpected error
+            return
+        }
+
         if (isSignup) {
 
-            if (result?.status !== 201) {
-                // Insert react toast-maker
+            if (result.status !== 201) {
+                // Insert toastify
                 console.log("Not 201: ", result?.message)
             
             } else {
 
                 console.log("Signup success", result.message)
-                router.push("/signin")
+                setTimeout(() => {
+                    router.push("/signin")
+                }, 2000)
                 return;
             }
-        } 
+        } else {
 
-        router.push("/")
+            if (result.status !== 200) {
+                // Insert toastify, result.message
+                return;
+
+            } else {
+                console.log(result.message)
+                // Insert toastify, result.message;
+                setTimeout(() => {
+                    router.push("/")
+                }, 2000)
+                return;
+            }
+        }
     }
 
     return ( 

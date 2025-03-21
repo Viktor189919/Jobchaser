@@ -12,34 +12,23 @@ export default function Form({ isSignup, authUser } : FormProps) {
     const router = useRouter();
     const onSubmit: SubmitHandler<FormInputs> = async (data) => {
 
-        try {
-            const result = await authUser(data)
+        const result = await authUser(data)
 
-            if (!result) {
-                console.error("No response from server");
+        if (isSignup) {
+
+            if (result?.status !== 201) {
                 // Insert react toast-maker
+                console.log("Not 201: ", result?.message)
+            
+            } else {
+
+                console.log("Signup success", result.message)
+                router.push("/signin")
                 return;
             }
+        } 
 
-
-            if (isSignup) {
-
-                if (result.status !== 201) {
-                    // Insert react toast-maker
-                
-                } else {
-
-                    // Insert react toast-maker
-                    router.push("/signin")
-                    return;
-                }
-            } 
-
-            router.push("/")
-
-        } catch (error) {
-            console.error("Error", error)
-        }    
+        router.push("/")
     }
 
     return ( 

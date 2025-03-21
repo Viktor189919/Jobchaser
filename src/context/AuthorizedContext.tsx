@@ -6,7 +6,7 @@ import { set } from "react-hook-form";
 
 type AuthContextType = {
     isAuthorized : boolean;
-    login : (userInfo : FormInputs) => Promise<ApiResponse | void>;
+    login : (userInfo : FormInputs) => Promise<ApiResponse | {}>;
     logout : () => Promise<void>;
 }
 
@@ -18,28 +18,23 @@ function AuthProvider({children} : {children : React.ReactNode}) {
 
     async function login(userInfo : FormInputs) {
 
-        try {
+        // Call api function
+        const result = await signin(userInfo);
 
-            const user = await signin(userInfo);
-
-            if (!user) {
-                console.error("Auth - No response from server");
-                return;
-            }
-
-            if (!user.JWT) {
-                console.error(user)
-                // Insert react toast-maker with user.message
-                return;
-            }
-
-            localStorage.setItem("jobchaserToken", user.JWT)
-            setIsAuthorized(prevState => !prevState);
-            return user; 
-
-        } catch (error) {
-            console.error("Error: ", error)
+        if (!result) {
+            console.error("Unexpected error");
+            return {message: "Unexpected error"}
         }
+        
+        // Check if no token is returned
+        if (!result.JWT) {
+            console.error(result.message)
+            return result;
+        }
+
+        localStorage.setItem("jobchaserToken", result.JWT)
+        setIsAuthorized(prevState => !prevState);
+        return result; 
     }
 
     async function logout() {

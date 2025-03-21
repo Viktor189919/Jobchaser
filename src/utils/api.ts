@@ -1,10 +1,12 @@
 import { FormInputs } from "@/types/formTypes";
 import { ApiResponse } from "@/types/apiTypes";
 
+// Communicates with server directly
 async function signup(userInfo : FormInputs) {
 
     const { email, password } = userInfo;
 
+    // Using try/catch in case the server is not responding
     try {
 
         const response = await fetch("http://localhost:3001/users/signup", {
@@ -16,26 +18,27 @@ async function signup(userInfo : FormInputs) {
                 email: email,
                 password: password,
             })
-        })
+        });
 
         const data = await response.json();
+        
+        // Object including status code from server response
+        const responseData = {status: response.status, ...data};
 
-        if (!response.ok) {
-            console.log(data.message)
-            return data.message;
-        }
-
-        return data;
+        return responseData;
 
     } catch (error) {
         console.error(`Error: ${error}`);
+        return {status: 500, message: "Server error"};
     }
 }
 
+// Communicates with server directly
 async function signin(userInfo : FormInputs) : Promise<ApiResponse | undefined> {
     
     const { email, password } = userInfo;
 
+    // Using try/catch in case the server is not responding
     try {
         
         const response = await fetch("http://localhost:3001/users/signin", {
@@ -47,27 +50,18 @@ async function signin(userInfo : FormInputs) : Promise<ApiResponse | undefined> 
                 email: email,
                 password: password,
             })
-        })
+        });
 
-        if (!response) {
-            console.error("Signin - No response from server")
-            return
-        }
+        const data = await response.json();
 
-        const data = await response.json()
+        // Object including status code from server response
+        const responseData = {status: response.status, ...data};
 
-        if (!response.ok) {
-            return data.message;
-        }
-
-        if (!data.JWT) {
-            return data.message;
-        }
-
-        return data;
+        return responseData;
     
     } catch (error) {
-        console.error(`Error: ${error}`)
+        console.error(`Error: ${error}`);
+        return {status: 500, message: "Server error"};
     }
 }
 

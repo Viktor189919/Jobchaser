@@ -14,13 +14,13 @@ export default function Form({ isSignup, authUser } : FormProps) {
     const router = useRouter();
     const onSubmit: SubmitHandler<FormInputs> = async (data) => {
 
-        const result = await authUser(data)
+        const result = await authUser(data);
 
         if (!result) {
             notify("Unexpected error")
-            return
+            return;
         }
-
+        
         if (result.status !== 201 && result.status !== 200) {
             notify(result.message)
             return;

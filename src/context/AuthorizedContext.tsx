@@ -2,11 +2,11 @@ import { createContext, useState } from "react";
 import { FormInputs } from "@/types/formTypes";
 import { signin } from "@/utils/api"
 import { ApiResponse } from "@/types/apiTypes"
-import { set } from "react-hook-form";
+
 
 type AuthContextType = {
     isAuthorized : boolean;
-    login : (userInfo : FormInputs) => Promise<ApiResponse | {}>;
+    login : (userInfo : FormInputs) => Promise<ApiResponse | undefined>;
     logout : () => Promise<void>;
 }
 
@@ -21,9 +21,10 @@ function AuthProvider({children} : {children : React.ReactNode}) {
         // Call api function
         const result = await signin(userInfo);
 
+        // Returns nothing if no result. Is handled in form component
         if (!result) {
             console.error("Unexpected error");
-            return {message: "Unexpected error"}
+            return;
         }
         
         // Check if no token is returned
@@ -49,7 +50,6 @@ function AuthProvider({children} : {children : React.ReactNode}) {
             {children}
         </AuthContext.Provider>
     )
-
 }
 
 export default AuthProvider;

@@ -1,0 +1,27 @@
+.job {
+    height: 100%;
+    border: 2px solid black;
+    border-radius: 5px;
+    background-color: goldenrod;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    font-size: 1.2rem;
+}
+    
+.img {
+    width: 5rem;
+    height: auto;
+}
+.h2 {
+    font-size: 1.5rem;
+}
+.p {
+    border-left: 2px solid black;
+    padding-left: 0.4rem;
+    font-size: 1.2rem;
+}
+.a {
+    margin-left: auto;
+}

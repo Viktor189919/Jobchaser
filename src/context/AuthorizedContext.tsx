@@ -14,7 +14,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 function AuthProvider({children} : {children : React.ReactNode}) {
     
-    const [ isAuthorized, setIsAuthorized ] = useState(false);
+    const [ isAuthorized, setIsAuthorized ] = useState(true);
 
     async function login(userInfo : FormInputs) {
 

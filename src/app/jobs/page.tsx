@@ -28,33 +28,28 @@ export default function JobsPage() {
         router.push("/");
     }
 
-    const { joblist, origJoblist, isLoading, fetchJobs } = joblistContext;
+    const { joblist, origJoblist, isLoading, fetchJobs, filterJobs } = joblistContext;
 
     const [ searchValue, setSearchValue ] = useState<string>("");
 
 
     useEffect(() => {
         
-        async function getJobs() {
-
-            await fetchJobs()
-        }
-        
-        getJobs()
+        fetchJobs();
 
     }, [])
 
     function handleSearch(e : (React.ChangeEvent<HTMLInputElement>) ) : void {
         setSearchValue(e.target.value);
+        filterJobs(searchValue);
     };
 
     function handleFilter(word : string) : void {
 
         if (word) {
-
+            filterJobs(word);
         }
     }
-    console.log(isLoading)
 
     return  <>
               <Searchbar inputValue={searchValue} searchFunc={handleSearch} filterFunc={handleFilter} />

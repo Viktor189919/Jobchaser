@@ -39,10 +39,14 @@ function JoblistProvider({children} : {children : React.ReactNode}) {
                 console.error(response.status)
             }
 
-            const jobData = await response.json();
-            origJoblist.current = jobData.hits
-            setJoblist([...joblist, ...jobData.hits])
-        
+            const data = await response.json();
+            const jobData = data.hits.map(job => {
+                return {id: job.id, company_name: job.employer.name, company_url: job.employer.url, logo_url: job.logo_url, headline: job.headline}
+            })
+
+            origJoblist.current = jobData
+            setJoblist([...jobData])
+
         } catch (error) {
             console.error("Error: ", error)
 
@@ -60,7 +64,7 @@ function JoblistProvider({children} : {children : React.ReactNode}) {
                                             .toLowerCase()
                                             .includes(filterValue.toLowerCase())
                 
-                const nameIncludes =  job.employer.name
+                const nameIncludes =  job.name
                                         .toLowerCase()
                                         .includes(filterValue.toLowerCase())                           
                 if (headlineIncludes || nameIncludes) {

@@ -65,4 +65,22 @@ async function signin(userInfo : FormInputs) : Promise<ApiResponse | undefined> 
     }
 }
 
+async function getJobs() {
+    
+    try {
+
+        const response = await fetch("http://localhost:3001/jobs/favourites")
+        
+        const data = await response.json();
+        const responseData = {status: response.status, ...data};
+
+        return responseData;
+        
+    } catch (error) {
+        console.error("Error: ", error);
+        return {status: 500, message: "Server error"}
+    }
+    
+}
+
 export { signup, signin };

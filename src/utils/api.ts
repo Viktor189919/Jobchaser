@@ -1,4 +1,5 @@
 import { FormInputs } from "@/types/formTypes";
+import { Jobdata } from "@/types/jobTypes";
 import { ApiResponse } from "@/types/apiTypes";
 
 // Communicates with server directly
@@ -65,6 +66,36 @@ async function signin(userInfo : FormInputs) : Promise<ApiResponse | undefined> 
     }
 }
 
+async function saveJob(job : Jobdata) {
+
+    const token = localStorage.getItem("jobchaserToken")
+
+    try {
+
+        const response = await fetch("http://localhost:3001/jobs", {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                jobtechId: job.id.toString(),
+                companyName: job.company_name,
+                jobHeadline: job.headline,
+                companyURL: job.company_url
+            })
+        })
+
+        const data = await response.json()
+        const responseData = {status: response.status, ...data}
+
+        return responseData;
+
+    } catch (error) {
+        console.error("Error from saveJob function: ", error);
+    }
+}
+
 async function getJobs() {
     
     try {
@@ -83,4 +114,4 @@ async function getJobs() {
     
 }
 
-export { signup, signin };
+export { signup, signin, saveJob };

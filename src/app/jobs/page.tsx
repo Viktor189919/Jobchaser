@@ -5,7 +5,7 @@ import Joblist from "@/components/Joblist";
 import Searchbar from "@/components/Searchbar";
 import { AuthContext } from "@/context/AuthorizedContext";
 import { useRouter } from "next/navigation";
-import { JoblistContext } from "@/context/JoblistJobtechApiContext";
+import { JoblistContext } from "@/context/JoblistContext";
 
 export default function JobsPage() {
 

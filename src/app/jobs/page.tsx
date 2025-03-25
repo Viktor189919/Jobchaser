@@ -28,7 +28,7 @@ export default function JobsPage() {
         router.push("/");
     }
 
-    const { joblist, origJoblist, isLoading, fetchJobs, filterJobs } = joblistContext;
+    const { joblist, isLoading, fetchJobs, filterJobs } = joblistContext;
 
     const [ searchValue, setSearchValue ] = useState<string>("");
 

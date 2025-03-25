@@ -9,6 +9,7 @@ type JoblistContextType = {
     isLoading : boolean;
     fetchJobs : () => Promise<void>;
     filterJobs : (filterValue : string) => void;
+    findJobById : (id : number) => Jobdata | null;
 }
 
 const JoblistContext = createContext<JoblistContextType | undefined>(undefined)
@@ -78,12 +79,20 @@ function JoblistProvider({children} : {children : React.ReactNode}) {
         } else {
             setJoblist([...origJoblist.current]);
         }
+    }
 
-        
+    function findJobById(id : number) {
+
+        const job = joblist.filter(job => job.id === id)
+
+        if (job.length < 1) {
+            return null;
+        }
+        return job[0];
     }
 
     return (
-        <JoblistContext.Provider value={{joblist, origJoblist, isLoading, fetchJobs, filterJobs}}>{children}</JoblistContext.Provider>
+        <JoblistContext.Provider value={{joblist, origJoblist, isLoading, fetchJobs, filterJobs, findJobById}}>{children}</JoblistContext.Provider>
     )
 }
 

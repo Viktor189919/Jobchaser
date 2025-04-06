@@ -1,12 +1,22 @@
 "use client"
 
+import { useContext } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { FormProps, FormInputs } from "@/types/formTypes";
 import styles from "@/components/Form/Form.module.css";
+import { AuthContext } from "@/context/AuthorizedContext";
 
-export default function Form({ isSignup, authUser } : FormProps) {
+export default function Form({ isSignup, authenticateUser } : FormProps) {
+
+    const authContext = useContext(AuthContext);
+
+    if (!authContext) {
+        throw new Error("Authcontext does not have a valid value");
+    }
+
+    const { authorizeUser } = authContext;
 
     const notify = (msg : string) => toast(msg);
 
@@ -14,22 +24,22 @@ export default function Form({ isSignup, authUser } : FormProps) {
     const router = useRouter();
     const onSubmit: SubmitHandler<FormInputs> = async (data) => {
 
-        const result = await authUser(data);
+        const authenticateResult = await authenticateUser(data);
 
-        if (!result) {
+        if (!authenticateResult) {
             notify("Unexpected error")
             return;
         }
         
-        if (result.status !== 201 && result.status !== 200) {
-            notify(result.message)
+        if (authenticateResult.status !== 201 && authenticateResult.status !== 200) {
+            notify(authenticateResult.message)
             return;
         }
 
         if (isSignup) {
 
-            console.log("Signup success", result.message)
-            notify(result.message)
+            console.log("Signup success", authenticateResult.message)
+            notify(authenticateResult.message)
             setTimeout(() => {
                 router.push("/signin")
             }, 2000)
@@ -37,8 +47,21 @@ export default function Form({ isSignup, authUser } : FormProps) {
             
             } else {
 
-                console.log(result.message)
-                notify(result.message)
+                const authorizeResult = await authorizeUser();
+
+                if (!authorizeResult) {
+                    console.error("Unexpected error")
+                    return;
+                }
+
+                if (authorizeResult.status !== 200) {
+                    console.error(authorizeResult)
+                    notify(authorizeResult.message);
+                    return;
+                }
+                
+                console.log(authenticateResult.message)
+                notify(authenticateResult.message)
                 setTimeout(() => {
                     router.push("/")
                 }, 2000)

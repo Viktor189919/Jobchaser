@@ -9,7 +9,7 @@ function SignUpPage() {
     return (
         <>
             <h2 className={styles.h2}>Enter your information to sign up</h2>
-            <Form isSignup={true} authUser={signup} />
+            <Form isSignup={true} authenticateUser={signup} />
         </>
     )
 }

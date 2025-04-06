@@ -57,7 +57,7 @@ export default function Joblist({jobList, isLoading} : JoblistProps) {
         const savedJob = await saveJob(job);
 
         // Insert toastify. saveJob
-        console.log(savedJob.status, savedJob.message)
+        console.log("Log from Joblist: ", savedJob.status, savedJob.message)
     }
 
     const jobs = isLoading

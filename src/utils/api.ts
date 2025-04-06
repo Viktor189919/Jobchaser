@@ -44,6 +44,7 @@ async function signin(userInfo : FormInputs) : Promise<ApiResponse | undefined> 
         
         const response = await fetch("http://localhost:3001/users/signin", {
             method: "POST",
+            credentials: "include",
             headers: {
                 "Content-Type": "application/json"
             },
@@ -66,16 +67,36 @@ async function signin(userInfo : FormInputs) : Promise<ApiResponse | undefined> 
     }
 }
 
-async function saveJob(job : Jobdata) {
-
-    const token = localStorage.getItem("jobchaserToken")
+async function checkAuth() {
 
     try {
 
-        const response = await fetch("http://localhost:3001/jobs", {
+        const response = await fetch("http://localhost:3001/users/checkAuth", {
             method: "POST",
+            credentials: "include",
+        })
+
+        const data = response.json();
+
+        const responseData = {status: response.status, ...data};
+
+        return responseData;
+
+    } catch (error) {
+        console.error("Error: ", error);
+        return {status: 500, message: "Server error"};
+    }
+}
+
+
+async function saveJob(job : Jobdata) {
+
+    try {
+
+        const response = await fetch("http://localhost:3001/jobs/favourites", {
+            method: "POST",
+            credentials: "include",
             headers: {
-                "Authorization": `Bearer ${token}`,
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
@@ -114,4 +135,4 @@ async function getJobs() {
     
 }
 
-export { signup, signin, saveJob };
+export { signup, signin, checkAuth, saveJob };

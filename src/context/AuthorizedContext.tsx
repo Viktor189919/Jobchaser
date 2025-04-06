@@ -1,12 +1,12 @@
 import { createContext, useState } from "react";
 import { FormInputs } from "@/types/formTypes";
-import { signin } from "@/utils/api"
+import { checkAuth } from "@/utils/api"
 import { ApiResponse } from "@/types/apiTypes"
 
 
 type AuthContextType = {
     isAuthorized : boolean;
-    login : (userInfo : FormInputs) => Promise<ApiResponse | undefined>;
+    authorizeUser : () => Promise<ApiResponse | undefined>;
     logout : () => Promise<void>;
 }
 
@@ -16,10 +16,10 @@ function AuthProvider({children} : {children : React.ReactNode}) {
     
     const [ isAuthorized, setIsAuthorized ] = useState(false);
 
-    async function login(userInfo : FormInputs) {
+    async function authorizeUser() {
 
         // Call api function
-        const result = await signin(userInfo);
+        const result = await checkAuth();
 
         // Returns nothing if no result. Is handled in form component
         if (!result) {
@@ -27,14 +27,12 @@ function AuthProvider({children} : {children : React.ReactNode}) {
             return;
         }
         
-        // Check if no token is returned
-        if (!result.JWT) {
-            console.error(result.message)
-            return result;
+        // Change authorization only if successful response
+        if (result.status === 200) {
+            setIsAuthorized(true);
         }
-
-        localStorage.setItem("jobchaserToken", result.JWT)
-        setIsAuthorized(prevState => !prevState);
+        
+        // Return response wheter successful or not
         return result; 
     }
 
@@ -46,7 +44,7 @@ function AuthProvider({children} : {children : React.ReactNode}) {
     }
 
     return (
-        <AuthContext.Provider value={{isAuthorized, login, logout}}>
+        <AuthContext.Provider value={{isAuthorized, authorizeUser, logout}}>
             {children}
         </AuthContext.Provider>
     )

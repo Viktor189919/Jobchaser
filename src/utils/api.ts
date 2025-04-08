@@ -101,9 +101,9 @@ async function saveJob(job : Jobdata) {
             },
             body: JSON.stringify({
                 jobtechId: job.id.toString(),
-                companyName: job.company_name,
-                jobHeadline: job.headline,
-                companyURL: job.company_url
+                companyName: job.companyName,
+                jobHeadline: job.jobHeadline,
+                companyURL: job.companyURL
             })
         })
 
@@ -121,18 +121,48 @@ async function getJobs() {
     
     try {
 
-        const response = await fetch("http://localhost:3001/jobs/favourites")
+        const response = await fetch("http://localhost:3001/jobs/favourites", {
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
         
         const data = await response.json();
         const responseData = {status: response.status, ...data};
-
+        console.log(responseData)
         return responseData;
         
     } catch (error) {
         console.error("Error: ", error);
         return {status: 500, message: "Server error"}
     }
-    
 }
 
-export { signup, signin, checkAuth, saveJob };
+async function removeUserJob(id : number) {
+
+    try {
+        
+        const response = await fetch("http://localhost:3001/jobs/favourites", {
+            method: "DELETE",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                id: id,
+            })
+        })
+
+        const data = await response.json();
+        const responseData = {status: response.status, ...data};
+
+        return responseData;
+
+    } catch (error) {
+        console.error("Error from RemoveUserJob: ", error);
+        return {status: 500, message: "Server error"}
+    }
+}
+
+export { signup, signin, checkAuth, saveJob, getJobs, removeUserJob };

@@ -1,5 +1,6 @@
-import { createContext, useState } from "react";
-import { FormInputs } from "@/types/formTypes";
+
+
+import { createContext, useState, useEffect } from "react";
 import { checkAuth } from "@/utils/api"
 import { ApiResponse } from "@/types/apiTypes"
 
@@ -15,6 +16,10 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 function AuthProvider({children} : {children : React.ReactNode}) {
     
     const [ isAuthorized, setIsAuthorized ] = useState(false);
+    
+    useEffect(() => {
+        authorizeUser()
+    }, [])
 
     async function authorizeUser() {
 
@@ -40,7 +45,6 @@ function AuthProvider({children} : {children : React.ReactNode}) {
 
         localStorage.removeItem("jobchaserToken")
         setIsAuthorized(false);
-
     }
 
     return (

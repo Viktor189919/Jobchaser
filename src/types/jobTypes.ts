@@ -1,5 +1,7 @@
 export type JoblistProps = {
-    jobList: Jobdata[]; 
+    jobList : Jobdata[]; 
+    modifyFunc : (id : number, e : React.MouseEvent) => void; 
+    isFavourites : boolean;
     isLoading : boolean;
 }
 
@@ -9,10 +11,10 @@ export type JobProps = {
 
 export type Jobdata = {
     id: number;
-    company_name: string;
-    company_url: string;
-    logo_url: string;
-    headline: string;
+    companyName: string;
+    companyURL: string;
+    logo_url?: string;
+    jobHeadline: string;
 }
 
 export type JobsArray = {

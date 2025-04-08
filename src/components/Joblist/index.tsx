@@ -15,7 +15,7 @@ const override: CSSProperties = {
     alignSelf: "center",
 }
 
-export default function Joblist({jobList, isLoading} : JoblistProps) {
+export default function Joblist({jobList, modifyFunc, isFavourites, isLoading} : JoblistProps) {
 
     const router = useRouter();
 
@@ -45,27 +45,18 @@ export default function Joblist({jobList, isLoading} : JoblistProps) {
         router.push("/");
     }
 
-    async function addFavourite(id : number) {
+    console.log("Log from Joblist: ", jobList)
 
-        const job = findJobById(id);
-
-        if (!job) {
-            // Insert toastify. Job not found
-            return;
-        }
-
-        const savedJob = await saveJob(job);
-
-        // Insert toastify. saveJob
-        console.log("Log from Joblist: ", savedJob.status, savedJob.message)
-    }
 
     const jobs = isLoading
                  ? <ClipLoader cssOverride={override} color={"goldenrod"} size={60}/>
                  :  jobList.length >= 1
                  ?  jobList.map(job => {
-                        return <li className={styles.li} key={job.id}><Job jobData={job}/><button onClick={() => addFavourite(job.id)}>Add favourite</button></li>
-                    })
+                        const type = isFavourites
+                                            ? <li className={styles.li} key={job.id}><Job jobData={job}/><button onClick={(e) => modifyFunc(job.id, e)}>Remove</button></li>
+                                            : <li className={styles.li} key={job.id}><Job jobData={job}/><button onClick={(e) => modifyFunc(job.id, e)}>Add favourite</button></li>
+                                            return type
+                                        })
                  : <p className={styles.emptyText}>No jobs to display</p> 
 
     return <ul className={styles.joblist} style={darkTheme ? {backgroundColor: "darkgreen"} : {}}>{jobs}</ul>;

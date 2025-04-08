@@ -42,7 +42,7 @@ function JoblistProvider({children} : {children : React.ReactNode}) {
 
             const data = await response.json();
             const jobData = data.hits.map((job: { id: any; employer: { name: any; url: any; }; logo_url: any; headline: any; }) => {
-                return {id: job.id, company_name: job.employer.name, company_url: job.employer.url, logo_url: job.logo_url, headline: job.headline}
+                return {id: job.id, companyName: job.employer.name, companyURL: job.employer.url, logo_url: job.logo_url, jobHeadline: job.headline}
             })
 
             origJoblist.current = jobData
@@ -61,11 +61,11 @@ function JoblistProvider({children} : {children : React.ReactNode}) {
         if (filterValue !== "" && filterValue !== "all") {
             const filteredJobs = origJoblist.current.filter(job => {
 
-                const headlineIncludes = job.headline
+                const headlineIncludes = job.jobHeadline
                                             .toLowerCase()
                                             .includes(filterValue.toLowerCase())
                 
-                const nameIncludes =  job.company_name
+                const nameIncludes =  job.companyName
                                         .toLowerCase()
                                         .includes(filterValue.toLowerCase())                           
                 if (headlineIncludes || nameIncludes) {

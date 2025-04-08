@@ -31,14 +31,15 @@ export default function Header() {
                     <h1 className={styles.h1}>JobChaser</h1>
                     <ul className={styles.linkContainer}>
                         <li className={styles.liElement} key="1"><Link className={styles.pageLink} href="/">Home</Link></li>
-                        {/* <li className={styles.liElement} key="3"><Link className={styles.pageLink} href="/signup">Sign up</Link></li>
-                        <li className={styles.liElement} key="2"><Link className={styles.pageLink} href="/signin">Sign in</Link></li> */}
                         {isAuthorized 
                                     ? <li className={styles.liElement} key="2"><Link className={styles.pageLink} href="/jobs">Jobs</Link></li>
                                     : <li className={styles.liElement} key="2"><Link className={styles.pageLink} href="/signin">Sign in</Link></li>}
+                        {isAuthorized
+                                    ? <li className={styles.liElement} key="3"><Link className={styles.pageLink} href="/favourites">Favourites</Link></li>
+                                    : null}
                         {isAuthorized  
-                                    ? <li className={styles.liElement} key="3"><Link className={styles.pageLink} onClick={logout} href="/">Sign out</Link></li>
-                                    : <li className={styles.liElement} key="3"><Link className={styles.pageLink} href="/signup">Sign up</Link></li>}
+                                    ? <li className={styles.liElement} key="4"><Link className={styles.pageLink} onClick={logout} href="/">Sign out</Link></li>
+                                    : <li className={styles.liElement} key="4"><Link className={styles.pageLink} href="/signup">Sign up</Link></li>}
                     </ul>
                     <ThemeSwitch />
                 </nav>

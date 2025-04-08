@@ -1,13 +1,16 @@
 "use client"
 
+import { ToastContainer, toast } from "react-toastify";
 import { useEffect, useState, useContext } from "react"
 import { useRouter } from "next/navigation"
 import Joblist from "@/components/Joblist"
 import { Jobdata } from "@/types/jobTypes"
 import { AuthContext } from "@/context/AuthorizedContext"
+import { removeUserJob, getJobs } from "@/utils/api"
 
-function FavouritesPage() {
+export default function FavouritesPage() {
     
+    const notify = (msg : string) => toast(msg);
     const router = useRouter()
     const authContext = useContext(AuthContext);
 
@@ -22,23 +25,41 @@ function FavouritesPage() {
     }
 
     const [ favJobs, setFavJobs ] = useState<Jobdata[]>([])
+    const [ isLoading, setIsLoading ] = useState<boolean>(true)
 
     useEffect(() => {
-
-        async function fetchFavJobs() {
-
-            const jobs = await getJobs();
-
-            if (!jobs) {}
-        }
-        
-
+        fetchFavJobs()
     }, [])
 
+    async function fetchFavJobs() {
+
+        setIsLoading(true);
+
+        const jobs = await getJobs();
+        console.log(jobs.jobs)
+        if (jobs.status === 200) {
+            setFavJobs(jobs.jobs)
+        }
+
+        setIsLoading(false)
+    }
+ 
+    async function removeFav(id : number) {
+
+        const result = await removeUserJob(id) 
+       
+        if (result.status === 200) {
+            setFavJobs(favJobs.filter(job => job.id !== id))
+        }
+
+        notify(result.message)
+    }
+    
     return (
         <>
         <h2>Favourite jobs</h2>
-        <Joblist jobList={favJobs} isLoading={false}></Joblist>
+        <Joblist jobList={favJobs} modifyFunc={removeFav} isFavourites={true} isLoading={isLoading}></Joblist>
+        <ToastContainer />
         </>
     )
 }

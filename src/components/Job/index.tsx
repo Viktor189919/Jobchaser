@@ -16,26 +16,26 @@ export default function Job({jobData} : JobProps) {
 
     const { darkTheme } = themeContext;
 
-    const { company_name, company_url, logo_url, headline } = jobData;
+    const { companyName, companyURL, logo_url, jobHeadline } = jobData;
     let companyLogo;
 
-    const employerWebpage = !company_url
+    const employerWebpage = !companyURL
                             ? "" 
-                            : company_url.startsWith("http") 
-                            ? company_url 
-                            : `https://${company_url}`
+                            : companyURL.startsWith("http") 
+                            ? companyURL 
+                            : `https://${companyURL}`
 
     if (!logo_url || logo_url === "") {
         companyLogo = "images/default-company-logo.svg"
     } else {
         companyLogo = logo_url
     }
-                    
+                     
 
     return  <article className={styles.job} style={darkTheme ? {border: "solid 2px yellow"} : {}}>
-                <Image className={styles.img} src={companyLogo} width={300} height={300} alt={`${company_name ? company_name : "Company"} logo`} />
-                <h2 className={styles.h2}>{company_name ? company_name : "Company name unavailable"}</h2>
-                <p className={styles.p}>{headline ? headline : "Jobdescription unavailable"}</p>
+                <Image className={styles.img} src={companyLogo} width={300} height={300} alt={`${companyName ? companyName : "Company"} logo`} />
+                <h2 className={styles.h2}>{companyName ? companyName : "Company name unavailable"}</h2>
+                <p className={styles.p}>{jobHeadline ? jobHeadline : "Jobdescription unavailable"}</p>
                 <a className={styles.a} href={employerWebpage} target="_blank">Visit homepage</a>
             </article>
 

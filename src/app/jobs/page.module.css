@@ -1,0 +1,10 @@
+.pagination {
+    list-style: none;
+    display: flex;
+    font-size: 2rem;
+    gap: 1rem;
+}
+
+.pagination:hover {
+    cursor: pointer;
+}

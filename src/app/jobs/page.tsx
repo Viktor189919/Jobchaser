@@ -7,6 +7,7 @@ import { AuthContext } from "@/context/AuthorizedContext";
 import { useRouter } from "next/navigation";
 import { JoblistContext } from "@/context/JoblistContext";
 import { saveJob } from "@/utils/api";
+import styles from "@/app/jobs/page.module.css"
 
 export default function JobsPage() {
 
@@ -29,16 +30,15 @@ export default function JobsPage() {
         router.push("/");
     }
 
-    const { joblist, isLoading, fetchJobs, filterJobs, findJobById } = joblistContext;
+    const { joblist, isLoading, fetchJobs, filterJobs, findJobById, activePage, changeActivePage } = joblistContext;
 
     const [ searchValue, setSearchValue ] = useState<string>("");
 
-
     useEffect(() => {
         
-        fetchJobs();
+        fetchJobs(activePage);
 
-    }, [])
+    }, [activePage])
 
     function handleSearch(e : (React.ChangeEvent<HTMLInputElement>) ) : void {
         setSearchValue(e.target.value);
@@ -70,5 +70,11 @@ export default function JobsPage() {
     return  <>
               <Searchbar inputValue={searchValue} searchFunc={handleSearch} filterFunc={handleFilter} />
               <Joblist jobList={joblist} modifyFunc={addFav} isFavourites={false} isLoading={isLoading}/>
+              <ul className={styles.pagination}>
+                <li onClick={() => changeActivePage(1)}>1</li>
+                <li onClick={() => changeActivePage(2)}>2</li>
+                <li onClick={() => changeActivePage(3)}>3</li>
+                <li onClick={() => changeActivePage(4)}>4</li>
+              </ul>
           </>
 };

@@ -90,6 +90,7 @@ export default function Form({ isSignup, authenticateUser } : FormProps) {
             <fieldset className={styles.fieldset}>
                 <label htmlFor="passwordInput">Password</label>
                 <input className={styles.input} 
+                    type="password"
                     id="passwordInput" 
                     {...register("password", 
                         {required: "Password is required", 

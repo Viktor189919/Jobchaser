@@ -37,36 +37,33 @@ export default function Form({ isSignup, authenticateUser } : FormProps) {
         }
 
         if (isSignup) {
-
-            console.log("Signup success", authenticateResult.message)
             notify(authenticateResult.message)
             setTimeout(() => {
                 router.push("/signin")
             }, 2000)
             return;
             
-            } else {
+        } else {
 
-                const authorizeResult = await authorizeUser();
+            const authorizeResult = await authorizeUser();
 
-                if (!authorizeResult) {
-                    console.error("Unexpected error")
-                    return;
-                }
-
-                if (authorizeResult.status !== 200) {
-                    console.error(authorizeResult)
-                    notify(authorizeResult.message);
-                    return;
-                }
-                
-                console.log(authenticateResult.message)
-                notify(authenticateResult.message)
-                setTimeout(() => {
-                    router.push("/")
-                }, 2000)
+            if (!authorizeResult) {
+                console.error("Unexpected error")
                 return;
             }
+
+            if (authorizeResult.status !== 200) {
+                console.error(authorizeResult)
+                notify(authorizeResult.message);
+                return;
+            }
+            
+            notify(authenticateResult.message)
+            setTimeout(() => {
+                router.push("/")
+            }, 2000)
+            return;
+        }
     }
 
     return ( 

@@ -1,7 +1,6 @@
-import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import type { NextRequest } from "next/server";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@/generated/prisma/client";
 
 const prisma = new PrismaClient()
 
@@ -9,7 +8,14 @@ const SALT_ROUNDS = process.env.SALT_ROUNDS || "10";
 
 export async function POST(req : NextRequest) {
 
-    const { email, password } = await req.json();
+    let email;
+    let password;
+
+    try {
+        ({ email, password } = await req.json());
+    } catch {
+        return Response.json({error: "Invalid JSON format"}, {status: 400})
+    }
 
     if (email && typeof email !== "string") {
         return Response.json({error: "Invalid email type", status: 400})

@@ -14,7 +14,7 @@ type AuthContextType = {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 function AuthProvider({children} : {children : React.ReactNode}) {
-    
+
     const [ isAuthorized, setIsAuthorized ] = useState(false);
     
     useEffect(() => {

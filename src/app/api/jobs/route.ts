@@ -1,0 +1,88 @@
+import type { NextRequest } from "next/server";
+import { PrismaClient } from "@/generated/prisma/client";
+
+const prisma = new PrismaClient;
+
+export async function POST(req : NextRequest) {
+
+    try {
+
+        const userId = req.headers.get("x-user-id");
+
+        let jobtechId;
+        let companyName;
+        let jobHeadline;
+        let companyURL;
+
+        try {
+            ({jobtechId, companyName, jobHeadline, companyURL} = await req.json());
+        } catch {
+            return Response.json({error: "Invalid JSON format"}, {status: 400})
+        }
+
+        if (!userId) {
+            return Response.json({error: "Unauthorized, token not found"}, {status: 401});
+        }
+
+        if (jobtechId && typeof jobtechId !== "string") {
+            return Response.json({error: "Invalid jobtechId type"}, {status: 400})
+        }
+
+        if (companyName && typeof companyName !== "string") {
+            return Response.json({error: "Invalid companyName type"}, {status: 400})
+        }
+
+        if (jobHeadline && typeof jobHeadline !== "string") {
+            return Response.json({error: "Invalid jobHeadline type"}, {status: 400})
+        }
+
+        if (companyURL && typeof companyURL !== "string") {
+            return Response.json({error: "Invalid companyURL type"}, {status: 400})
+        }
+
+        const isJob = await prisma.job.findUnique({
+            where: {
+                id: jobtechId,
+            }
+        })
+
+        if (!isJob) {
+
+            await prisma.job.create({
+                data: {
+                    id: jobtechId, 
+                    companyName: companyName, 
+                    jobHeadline: jobHeadline, 
+                    companyURL: companyURL,
+                }
+            })
+        }
+
+        const isUserJob = await prisma.user_jobs.findMany({
+            where: {
+                user_id: userId,
+                job_id: jobtechId,
+            }
+        })
+
+        if (!isUserJob.length) {
+
+            const userJob = await prisma.user_jobs.create({
+                data: {
+                    user_id: userId,
+                    job_id: jobtechId,
+                }
+            })
+
+            if (!userJob) {
+                return Response.json({error: "Error creating job, please try again"}, {status: 500});
+            }
+        }
+
+        return Response.json({message: "Job created successfully"}, {status: 201});
+
+    } catch (error) {
+        console.error("Error from api/jobs:POST: ", error);
+        return Response.json({error: "Internal server error"}, {status: 500});
+    }
+}

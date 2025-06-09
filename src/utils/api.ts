@@ -10,7 +10,7 @@ async function signup(userInfo : FormInputs) {
     // Using try/catch in case the server is not responding
     try {
 
-        const response = await fetch("http://localhost:3001/users/signup", {
+        const response = await fetch("http://localhost:3000/api/users", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -42,7 +42,7 @@ async function signin(userInfo : FormInputs) : Promise<ApiResponse | undefined> 
     // Using try/catch in case the server is not responding
     try {
         
-        const response = await fetch("http://localhost:3001/users/signin", {
+        const response = await fetch("http://localhost:3000/api/auth/signin", {
             method: "POST",
             credentials: "include",
             headers: {
@@ -71,12 +71,12 @@ async function checkAuth() {
 
     try {
 
-        const response = await fetch("http://localhost:3001/users/checkAuth", {
+        const response = await fetch("http://localhost:3000/api/user/check", {
             method: "POST",
             credentials: "include",
         })
 
-        const data = response.json();
+        const data = await response.json();
 
         const responseData = {status: response.status, ...data};
 
@@ -93,7 +93,7 @@ async function saveJob(job : Jobdata) {
 
     try {
 
-        const response = await fetch("http://localhost:3001/jobs/favourites", {
+        const response = await fetch("http://localhost:3000/jobs/favourites", {
             method: "POST",
             credentials: "include",
             headers: {
@@ -121,7 +121,7 @@ async function getJobs() {
     
     try {
 
-        const response = await fetch("http://localhost:3001/jobs/favourites", {
+        const response = await fetch("http://localhost:3000/jobs/favourites", {
             credentials: "include",
             headers: {
                 "Content-Type": "application/json"
@@ -143,7 +143,7 @@ async function removeUserJob(id : number) {
 
     try {
         
-        const response = await fetch("http://localhost:3001/jobs/favourites", {
+        const response = await fetch("http://localhost:3000/jobs/favourites", {
             method: "DELETE",
             credentials: "include",
             headers: {

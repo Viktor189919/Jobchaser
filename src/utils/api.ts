@@ -10,7 +10,7 @@ async function signup(userInfo : FormInputs) {
     // Using try/catch in case the server is not responding
     try {
 
-        const response = await fetch("http://localhost:3000/api/users", {
+        const res = await fetch("http://localhost:3000/api/users", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -21,12 +21,12 @@ async function signup(userInfo : FormInputs) {
             })
         });
 
-        const data = await response.json();
+        const data = await res.json();
         
         // Object including status code from server response
-        const responseData = {status: response.status, ...data};
+        const resData = {status: res.status, ...data};
 
-        return responseData;
+        return resData;
 
     } catch (error) {
         console.error(`Error: ${error}`);
@@ -42,7 +42,7 @@ async function signin(userInfo : FormInputs) : Promise<ApiResponse | undefined> 
     // Using try/catch in case the server is not responding
     try {
         
-        const response = await fetch("http://localhost:3000/api/auth/signin", {
+        const res = await fetch("http://localhost:3000/api/auth/signin", {
             method: "POST",
             credentials: "include",
             headers: {
@@ -54,12 +54,12 @@ async function signin(userInfo : FormInputs) : Promise<ApiResponse | undefined> 
             })
         });
 
-        const data = await response.json();
+        const data = await res.json();
 
         // Object including status code from server response
-        const responseData = {status: response.status, ...data};
+        const resData = {status: res.status, ...data};
 
-        return responseData;
+        return resData;
     
     } catch (error) {
         console.error(`Error: ${error}`);
@@ -71,16 +71,16 @@ async function checkAuth() {
 
     try {
 
-        const response = await fetch("http://localhost:3000/api/user/check", {
+        const res = await fetch("http://localhost:3000/api/users/check", {
             method: "POST",
             credentials: "include",
         })
 
-        const data = await response.json();
+        const data = await res.json();
 
-        const responseData = {status: response.status, ...data};
+        const resData = {status: res.status, ...data};
 
-        return responseData;
+        return resData;
 
     } catch (error) {
         console.error("Error: ", error);
@@ -93,7 +93,7 @@ async function saveJob(job : Jobdata) {
 
     try {
 
-        const response = await fetch("http://localhost:3000/jobs/favourites", {
+        const res = await fetch("http://localhost:3000/api/jobs/", {
             method: "POST",
             credentials: "include",
             headers: {
@@ -107,10 +107,10 @@ async function saveJob(job : Jobdata) {
             })
         })
 
-        const data = await response.json()
-        const responseData = {status: response.status, ...data}
+        const data = await res.json()
+        const resData = {status: res.status, ...data}
 
-        return responseData;
+        return resData;
 
     } catch (error) {
         console.error("Error from saveJob function: ", error);
@@ -121,17 +121,17 @@ async function getJobs() {
     
     try {
 
-        const response = await fetch("http://localhost:3000/jobs/favourites", {
+        const res = await fetch("http://localhost:3000/api/jobs", {
             credentials: "include",
             headers: {
                 "Content-Type": "application/json"
             }
         })
         
-        const data = await response.json();
-        const responseData = {status: response.status, ...data};
-        console.log(responseData)
-        return responseData;
+        const data = await res.json();
+        const resData = {status: res.status, ...data};
+
+        return resData;
         
     } catch (error) {
         console.error("Error: ", error);
@@ -143,7 +143,7 @@ async function removeUserJob(id : number) {
 
     try {
         
-        const response = await fetch("http://localhost:3000/jobs/favourites", {
+        const res = await fetch("http://localhost:3000/jobs/favourites", {
             method: "DELETE",
             credentials: "include",
             headers: {
@@ -154,10 +154,10 @@ async function removeUserJob(id : number) {
             })
         })
 
-        const data = await response.json();
-        const responseData = {status: response.status, ...data};
+        const data = await res.json();
+        const resData = {status: res.status, ...data};
 
-        return responseData;
+        return resData;
 
     } catch (error) {
         console.error("Error from RemoveUserJob: ", error);

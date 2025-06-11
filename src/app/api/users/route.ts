@@ -57,11 +57,11 @@ export async function POST(req : NextRequest) {
         if (!user) {
             return Response.json({error: "Internal server error", status: 500})
         }
+
+        return Response.json({message: "User created successfully", status: 201});
     
     } catch (error) {
         console.error("Error from api/auth/signup:POST: ", error)
         return Response.json({error: "Internal server error", status: 500})
-    }
-
-    return Response.json({message: "User created successfully", status: 201});
+    } 
 }

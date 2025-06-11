@@ -86,3 +86,40 @@ export async function POST(req : NextRequest) {
         return Response.json({error: "Internal server error"}, {status: 500});
     }
 }
+
+export async function GET(req : NextRequest) {
+
+    try {
+
+        const userId = req.headers.get("x-user-id");
+
+        if (!userId) {
+            return Response.json({error: "Unauthorized, token not found"}, {status: 401});
+        }
+
+        const user = await prisma.user.findUnique({
+            where: { 
+                id: userId 
+            },
+            include: {
+                User_jobs: {
+                include: {
+                    Job: true,
+                },
+                },
+            },
+        });
+
+        if (!user) {
+            return Response.json({error: "User not found"}, {status: 404})
+        }
+          
+        const jobs = user.User_jobs.map(job => job.Job) ?? [];
+
+        return new Response(JSON.stringify(jobs), {status: 200});
+
+    } catch (error) {
+        console.error("Error from api/jobs:GET: ", error);
+        Response.json({error: "Internal server error"}, {status: 500});
+    }
+}

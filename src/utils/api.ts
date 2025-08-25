@@ -1,16 +1,15 @@
-import { FormInputs } from "@/types/formTypes";
 import { Jobdata } from "@/types/jobTypes";
-import { ApiResponse } from "@/types/apiTypes";
+import { FormType } from "@/app/lib/FormSchema";
 
-// Communicates with server directly
-async function signup(userInfo : FormInputs) {
+// These functions communicate directly with the server API routes
+
+async function signup(userInfo : FormType) {
 
     const { email, password } = userInfo;
 
-    // Using try/catch in case the server is not responding
     try {
 
-        const response = await fetch("http://localhost:3001/users/signup", {
+        const res = await fetch("http://localhost:3000/api/users", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -21,12 +20,12 @@ async function signup(userInfo : FormInputs) {
             })
         });
 
-        const data = await response.json();
+        const data = await res.json();
         
         // Object including status code from server response
-        const responseData = {status: response.status, ...data};
+        const resData = {status: res.status, ...data};
 
-        return responseData;
+        return resData;
 
     } catch (error) {
         console.error(`Error: ${error}`);
@@ -34,15 +33,13 @@ async function signup(userInfo : FormInputs) {
     }
 }
 
-// Communicates with server directly
-async function signin(userInfo : FormInputs) : Promise<ApiResponse | undefined> {
+async function signin(userInfo : FormType) {
     
     const { email, password } = userInfo;
 
-    // Using try/catch in case the server is not responding
     try {
         
-        const response = await fetch("http://localhost:3001/users/signin", {
+        const res = await fetch("http://localhost:3000/api/auth/signin", {
             method: "POST",
             credentials: "include",
             headers: {
@@ -54,12 +51,11 @@ async function signin(userInfo : FormInputs) : Promise<ApiResponse | undefined> 
             })
         });
 
-        const data = await response.json();
+        const data = await res.json();
 
-        // Object including status code from server response
-        const responseData = {status: response.status, ...data};
+        const resData = {status: res.status, ...data};
 
-        return responseData;
+        return resData;
     
     } catch (error) {
         console.error(`Error: ${error}`);
@@ -67,20 +63,20 @@ async function signin(userInfo : FormInputs) : Promise<ApiResponse | undefined> 
     }
 }
 
-async function checkAuth() {
+async function signout() {
 
     try {
 
-        const response = await fetch("http://localhost:3001/users/checkAuth", {
+        const res = await fetch("http://localhost:3000/api/auth/signout", {
             method: "POST",
             credentials: "include",
         })
 
-        const data = response.json();
+        const data = await res.json();
 
-        const responseData = {status: response.status, ...data};
+        const resData = {status: res.status, ...data};
 
-        return responseData;
+        return resData;
 
     } catch (error) {
         console.error("Error: ", error);
@@ -88,12 +84,11 @@ async function checkAuth() {
     }
 }
 
-
 async function saveJob(job : Jobdata) {
 
     try {
 
-        const response = await fetch("http://localhost:3001/jobs/favourites", {
+        const res = await fetch("http://localhost:3000/api/jobs/", {
             method: "POST",
             credentials: "include",
             headers: {
@@ -107,13 +102,14 @@ async function saveJob(job : Jobdata) {
             })
         })
 
-        const data = await response.json()
-        const responseData = {status: response.status, ...data}
+        const data = await res.json()
+        const resData = {status: res.status, ...data}
 
-        return responseData;
+        return resData;
 
     } catch (error) {
-        console.error("Error from saveJob function: ", error);
+        console.error("Error from utils/api saveJob(): ", error);
+        return {status: 500, message: "Internal server error"}
     }
 }
 
@@ -121,21 +117,22 @@ async function getJobs() {
     
     try {
 
-        const response = await fetch("http://localhost:3001/jobs/favourites", {
+        const res = await fetch("http://localhost:3000/api/jobs", {
             credentials: "include",
             headers: {
                 "Content-Type": "application/json"
             }
         })
         
-        const data = await response.json();
-        const responseData = {status: response.status, ...data};
-        console.log(responseData)
-        return responseData;
+        let data = await res.json();
+
+        const resData = {status: res.status, data: [...data]};
+
+        return resData;
         
     } catch (error) {
-        console.error("Error: ", error);
-        return {status: 500, message: "Server error"}
+        console.error("Error from utils/api getJobs(): ", error);
+        return {status: 500, message: "Internal server error"}
     }
 }
 
@@ -143,7 +140,7 @@ async function removeUserJob(id : number) {
 
     try {
         
-        const response = await fetch("http://localhost:3001/jobs/favourites", {
+        const res = await fetch("http://localhost:3000/api/jobs", {
             method: "DELETE",
             credentials: "include",
             headers: {
@@ -154,15 +151,15 @@ async function removeUserJob(id : number) {
             })
         })
 
-        const data = await response.json();
-        const responseData = {status: response.status, ...data};
+        const data = await res.json();
+        const resData = {status: res.status, ...data};
 
-        return responseData;
+        return resData;
 
     } catch (error) {
         console.error("Error from RemoveUserJob: ", error);
-        return {status: 500, message: "Server error"}
+        return {status: 500, message: "Internal server error"}
     }
 }
 
-export { signup, signin, checkAuth, saveJob, getJobs, removeUserJob };
+export { signup, signin, signout, saveJob, getJobs, removeUserJob };

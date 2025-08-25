@@ -1,5 +1,13 @@
-export type ApiResponse = {
+export type SuccessResponse = {
     status : number;
     message : string;
-    JWT? : string;
+    data? : {
+        id : string;
+        email : string;
+    };
+}
+
+export type ErrorResponse = {
+    status : number;
+    error : string;
 }

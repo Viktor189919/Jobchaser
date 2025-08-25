@@ -1,6 +1,6 @@
 "use client"
 
-import Form from "@/components/Form"
+import Form from "@/components/Forms"
 import { signup } from "@/utils/api" 
 import styles from "@/styles/SignupPage.module.css"
 

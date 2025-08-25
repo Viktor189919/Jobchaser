@@ -8,4 +8,4 @@ const FormSchema = z.object({
 type FormType = z.infer<typeof FormSchema>;
 
 export { FormSchema }
-export type {FormType}
+export type { FormType }

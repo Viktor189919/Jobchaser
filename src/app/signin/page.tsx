@@ -10,6 +10,8 @@ import { SuccessResponse, ErrorResponse } from "@/types/apiTypes";
 import { useUserStore } from "@/store/signedin";
 
 export default function SignInPage() {
+    
+    // const notify = (msg : string) => toast(msg);
 
     const router = useRouter();
 

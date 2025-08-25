@@ -2,21 +2,10 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormType, FormSchema } from "@/app/lib/FormSchema";
 import { SuccessResponse, ErrorResponse } from "@/types/apiTypes";
+import { FormProps } from "@/types/formTypes";
 import styles from "@/components/Forms/Form.module.css";
 
-export type FormProps = {
-    authenticateUser : (userInfo : FormType) => Promise<SuccessResponse | ErrorResponse | void | undefined>;
-    onSuccess?: (result : SuccessResponse) => void;
-    onError?: (error : ErrorResponse | String) => void;
-}
 
-export type FormInputs = {
-    email : string;
-    password : string;
-    error: {
-        message: string;
-    }
-}
 
 export default function SignInForm({ authenticateUser, onSuccess, onError, } : FormProps) {
 

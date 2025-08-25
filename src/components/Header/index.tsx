@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useCallback } from "react";
 import Link from "next/link";
 import { signout } from "@/utils/api"
 import ThemeSwitch from "@/components/ThemeSwitch";
@@ -15,6 +15,11 @@ export default function Header() {
     useEffect(() => {
         setHydrated(true); // mark that client store is hydrated
     }, []);
+
+    const handleSignOut = useCallback( async () => {
+        await signout();
+        useUserStore.getState().setAuthorized(false);
+    }, [])
 
     const themeContext = useContext(ThemeContext);
 
@@ -40,7 +45,7 @@ export default function Header() {
                                 ?   <>
                                         <li className={styles.liElement} key="2"><Link className={styles.pageLink} href="/jobs">Jobs</Link></li>
                                         <li className={styles.liElement} key="4"><Link className={styles.pageLink} href="/favourites">Favourites</Link></li>  
-                                        <li className={styles.liElement} key="5"><Link className={styles.pageLink} onClick={signout} href="/">Sign out</Link></li>
+                                        <li className={styles.liElement} key="5"><Link className={styles.pageLink} onClick={handleSignOut} href="/">Sign out</Link></li>
                                     </>
                                 :   <li className={styles.liElement} key="3"><Link className={styles.pageLink} href="/signin">Sign in</Link></li>
                                 

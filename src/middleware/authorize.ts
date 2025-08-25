@@ -7,7 +7,8 @@ import * as jose from "jose"
 export default async function authMiddleware(req : NextRequest) {
 
     try {
-        const token = req.cookies.get("jwt-token")?.value;
+        
+        const token = req?.cookies.get("jwt-token")?.value;
 
         if (!token) {
             return NextResponse.json({ error: "Unauthorized, missing token" }, { status: 401 });
@@ -31,5 +32,4 @@ export default async function authMiddleware(req : NextRequest) {
         console.error("Error from authMiddleware: ", error);
         return NextResponse.json({error: "Unauthorized, invalid token"}, {status: 401})
     }
-
 }

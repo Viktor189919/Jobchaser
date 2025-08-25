@@ -69,19 +69,16 @@ export async function POST(req : NextRequest) {
             path: "/",
         });
 
-        return new Response(JSON.stringify({ message: 'Signed in successfully' }), {
+        return new Response(JSON.stringify({userData: user, message: "Signed in successfully"}), {
             status: 200,
             headers: {
                 'Set-Cookie': cookie,
                 'Content-Type': 'application/json',
             },
-        });
+        } );
 
     } catch (error) {
         console.error("Error from api/auth/signin:POST: ", error)
         return Response.json({error: "Internal server error", status: 500})
     }
-    
-
-
 }

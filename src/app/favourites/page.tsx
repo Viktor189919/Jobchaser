@@ -5,24 +5,13 @@ import { useEffect, useState, useContext } from "react"
 import { useRouter } from "next/navigation"
 import Joblist from "@/components/Joblist"
 import { Jobdata } from "@/types/jobTypes"
-import { AuthContext } from "@/context/AuthorizedContext"
 import { removeUserJob, getJobs } from "@/utils/api"
+import { set } from "zod/v4-mini";
 
 export default function FavouritesPage() {
     
     const notify = (msg : string) => toast(msg);
     const router = useRouter()
-    const authContext = useContext(AuthContext);
-
-    if (!authContext) {
-        throw new Error("Authcontext does not have a valid value");
-    }
-
-    const { isAuthorized } = authContext;
-
-    if (!isAuthorized) {
-        router.push("/");
-    }
 
     const [ favJobs, setFavJobs ] = useState<Jobdata[]>([])
     const [ isLoading, setIsLoading ] = useState<boolean>(true)
@@ -35,10 +24,11 @@ export default function FavouritesPage() {
 
         setIsLoading(true);
 
-        const jobs = await getJobs();
-        console.log(jobs.jobs)
+        let jobs = await getJobs();
+
         if (jobs.status === 200) {
-            setFavJobs(jobs.jobs)
+            jobs = jobs as {status: number, data: Jobdata[]}
+            setFavJobs(jobs.data)
         }
 
         setIsLoading(false)
@@ -49,7 +39,7 @@ export default function FavouritesPage() {
         const result = await removeUserJob(id) 
        
         if (result.status === 200) {
-            setFavJobs(favJobs.filter(job => job.id !== id))
+            fetchFavJobs()
         }
 
         notify(result.message)
@@ -58,7 +48,7 @@ export default function FavouritesPage() {
     return (
         <>
         <h2>Favourite jobs</h2>
-        <Joblist jobList={favJobs} modifyFunc={removeFav} isFavourites={true} isLoading={isLoading}></Joblist>
+        <Joblist jobList={favJobs} modifyFunc={removeFav} isFavourites={true} isLoading={isLoading}/>
         <ToastContainer />
         </>
     )

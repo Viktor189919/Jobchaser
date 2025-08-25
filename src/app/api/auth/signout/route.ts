@@ -1,8 +1,8 @@
 import { serialize } from "cookie"
 
 export async function POST() {
+    
     try {
-
         const clearCookie = serialize('jwt-token', '', {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',

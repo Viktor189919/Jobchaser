@@ -9,6 +9,7 @@ export async function POST(req : NextRequest) {
 
         const userId = req.headers.get("x-user-id");
 
+        // Validation
         let jobtechId;
         let companyName;
         let jobHeadline;
@@ -120,6 +121,43 @@ export async function GET(req : NextRequest) {
 
     } catch (error) {
         console.error("Error from api/jobs:GET: ", error);
+        Response.json({error: "Internal server error"}, {status: 500});
+    }
+}
+
+export async function DELETE(req : NextRequest) {
+
+    try {
+
+        const userId = req.headers.get("x-user-id");
+
+        if (!userId) {
+            return Response.json({error: "Unauthorized, token not found"}, {status: 401});
+        }
+
+        const { id } = await req.json();
+
+        const job = await prisma.job.findUnique({
+            where: { 
+                id: id 
+            },
+        });
+
+        if (!job) {
+            return Response.json({error: "Job not found"}, {status: 404})
+        }
+
+        const delJob = await prisma.user_jobs.deleteMany({
+            where: {
+                user_id: userId,
+                job_id: id,
+            }
+        })
+
+        return new Response(JSON.stringify(delJob), {status: 200});
+
+    } catch (error) {
+        console.error("Error from api/jobs:DELETE: ", error);
         Response.json({error: "Internal server error"}, {status: 500});
     }
 }

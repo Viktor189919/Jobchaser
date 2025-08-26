@@ -9,7 +9,7 @@ async function signup(userInfo : FormType) {
 
     try {
 
-        const res = await fetch("http://localhost:3000/api/users", {
+        const res = await fetch("/api/users", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -39,7 +39,7 @@ async function signin(userInfo : FormType) {
 
     try {
         
-        const res = await fetch("http://localhost:3000/api/auth/signin", {
+        const res = await fetch("/api/auth/signin", {
             method: "POST",
             credentials: "include",
             headers: {
@@ -67,7 +67,7 @@ async function signout() {
 
     try {
 
-        const res = await fetch("http://localhost:3000/api/auth/signout", {
+        const res = await fetch("/api/auth/signout", {
             method: "POST",
             credentials: "include",
         })
@@ -88,7 +88,7 @@ async function saveJob(job : Jobdata) {
 
     try {
 
-        const res = await fetch("http://localhost:3000/api/jobs/", {
+        const res = await fetch("/api/jobs/", {
             method: "POST",
             credentials: "include",
             headers: {
@@ -117,7 +117,7 @@ async function getJobs() {
     
     try {
 
-        const res = await fetch("http://localhost:3000/api/jobs", {
+        const res = await fetch("/api/jobs", {
             credentials: "include",
             headers: {
                 "Content-Type": "application/json"
@@ -140,7 +140,7 @@ async function removeUserJob(id : string) {
 
     try {
         
-        const res = await fetch("http://localhost:3000/api/jobs", {
+        const res = await fetch("/api/jobs", {
             method: "DELETE",
             credentials: "include",
             headers: {

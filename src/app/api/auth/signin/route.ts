@@ -62,7 +62,7 @@ export async function POST(req : NextRequest) {
         const cookie = serialize("jwt-token", jwtToken, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
-            sameSite: "strict",
+            sameSite: "none",
             maxAge: 1 * 60 * 60, 
             path: "/",
         });

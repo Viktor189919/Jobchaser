@@ -6,7 +6,7 @@ export async function POST() {
         const clearCookie = serialize('jwt-token', '', {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
-            sameSite: 'strict',
+            sameSite: 'none',
             path: '/',
             expires: new Date(0),
         });

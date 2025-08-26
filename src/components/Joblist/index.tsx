@@ -1,11 +1,9 @@
 "use client"
 
-import React, { useContext, useState, CSSProperties } from "react"
-import { useRouter } from "next/navigation";
+import React, { useContext, CSSProperties } from "react"
 import ClipLoader from "react-spinners/ClipLoader";
 import { JoblistProps } from "@/types/jobTypes";
 import Job from "@/components/Job";
-import { saveJob } from "@/utils/api"
 import { JoblistContext } from "@/context/JoblistContext";
 import { ThemeContext } from "@/context/ThemeContext";
 import styles from "@/components/Joblist/Joblist.module.css" 
@@ -15,8 +13,6 @@ const override: CSSProperties = {
 }
 
 export default function Joblist({jobList, modifyFunc, isFavourites, isLoading} : JoblistProps) {
-
-    const router = useRouter();
 
     const themeContext = useContext(ThemeContext);
     const joblistContext = useContext(JoblistContext);
@@ -30,10 +26,6 @@ export default function Joblist({jobList, modifyFunc, isFavourites, isLoading} :
     }
 
     const { darkTheme } = themeContext;
-    const { findJobById } = joblistContext;
-
-    console.log("Joblist from Joblist component", jobList)
-    console.log("Log from Joblist: ", jobList)
 
     const jobs = isLoading
                  ? <ClipLoader cssOverride={override} color={"goldenrod"} size={60}/>

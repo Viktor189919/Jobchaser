@@ -3,14 +3,11 @@
 import React, { useContext, useState, useEffect } from "react";
 import Joblist from "@/components/Joblist";
 import Searchbar from "@/components/Searchbar";
-import { useRouter } from "next/navigation";
 import { JoblistContext } from "@/context/JoblistContext";
 import { saveJob } from "@/utils/api";
 import styles from "@/app/jobs/page.module.css"
 
 export default function JobsPage() {
-
-    const router = useRouter();
 
     const joblistContext = useContext(JoblistContext)
 
@@ -26,7 +23,7 @@ export default function JobsPage() {
         
         fetchJobs(activePage);
 
-    }, [activePage])
+    }, [activePage]);
 
     function handleSearch(e : (React.ChangeEvent<HTMLInputElement>) ) : void {
         setSearchValue(e.target.value);
@@ -40,7 +37,7 @@ export default function JobsPage() {
         }
     }
 
-    async function addFav(id : number) {
+    async function addFav(id : string) {
 
         const job = findJobById(id);
 

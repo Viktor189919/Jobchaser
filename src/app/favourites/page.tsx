@@ -1,17 +1,16 @@
 "use client"
 
 import { ToastContainer, toast } from "react-toastify";
-import { useEffect, useState, useContext } from "react"
-import { useRouter } from "next/navigation"
+import { useEffect, useState } from "react"
 import Joblist from "@/components/Joblist"
 import { Jobdata } from "@/types/jobTypes"
 import { removeUserJob, getJobs } from "@/utils/api"
-import { set } from "zod/v4-mini";
+
+
 
 export default function FavouritesPage() {
     
     const notify = (msg : string) => toast(msg);
-    const router = useRouter()
 
     const [ favJobs, setFavJobs ] = useState<Jobdata[]>([])
     const [ isLoading, setIsLoading ] = useState<boolean>(true)
@@ -34,7 +33,7 @@ export default function FavouritesPage() {
         setIsLoading(false)
     }
  
-    async function removeFav(id : number) {
+    async function removeFav(id : string) {
 
         const result = await removeUserJob(id) 
        

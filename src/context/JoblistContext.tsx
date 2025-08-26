@@ -9,7 +9,7 @@ type JoblistContextType = {
     isLoading : boolean;
     fetchJobs : (page : number) => Promise<void>;
     filterJobs : (filterValue : string) => void;
-    findJobById : (id : number) => Jobdata | null;
+    findJobById : (id : string) => Jobdata | null;
     activePage : number;
     changeActivePage : (page : number) => void;
 }
@@ -23,10 +23,7 @@ function JoblistProvider({children} : {children : React.ReactNode}) {
     const [ isLoading, setIsLoading ] = useState<boolean>(true);
     const [ activePage, setActivePage ] = useState<number>(1)
 
-    const hasFetched = useRef<boolean>(false)
-
     async function fetchJobs(page : number) {
-
 
         const offset = page > 1
                             ?(20 * page).toString()
@@ -39,12 +36,11 @@ function JoblistProvider({children} : {children : React.ReactNode}) {
             const response = await fetch(`https://jobsearch.api.jobtechdev.se/search?q=programmerare&offset=${offset}&limit=20`);
             
             if (!response.ok) {
-                // Insert react toastify. response.status
-                console.error(response.status)
+                console.error("Error from jobtech fetch: ", response)
             }
 
             const data = await response.json();
-            const jobData = data.hits.map((job: { id: any; employer: { name: any; url: any; }; logo_url: any; headline: any; }) => {
+            const jobData = data.hits.map((job: { id: string; employer: { name: string; url: string; }; logo_url: string; headline: string; }) => {
                 return {id: job.id, companyName: job.employer.name, companyURL: job.employer.url, logo_url: job.logo_url, jobHeadline: job.headline}
             })
 
@@ -84,7 +80,7 @@ function JoblistProvider({children} : {children : React.ReactNode}) {
         }
     }
 
-    function findJobById(id : number) {
+    function findJobById(id : string) {
 
         const job = joblist.filter(job => job.id === id)
 

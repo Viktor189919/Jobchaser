@@ -1,5 +1,6 @@
 import type { NextRequest } from "next/server";
-import { PrismaClient } from "@/generated/prisma/client";
+import { PrismaClient } from "@prisma/client";
+import { UserJob } from "@/types/jobTypes";
 
 const prisma = new PrismaClient;
 
@@ -114,8 +115,9 @@ export async function GET(req : NextRequest) {
         if (!user) {
             return Response.json({error: "User not found"}, {status: 404})
         }
+        console.log(user);
           
-        const jobs = user.User_jobs.map(job => job.Job) ?? [];
+        const jobs = user.User_jobs.map((userJob : UserJob) => userJob.Job) ?? [];
 
         return new Response(JSON.stringify(jobs), {status: 200});
 

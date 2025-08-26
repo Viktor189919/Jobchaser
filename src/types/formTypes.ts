@@ -4,5 +4,5 @@ import { SuccessResponse, ErrorResponse } from "@/types/apiTypes";
 export type FormProps = {
     authenticateUser : (userInfo : FormType) => Promise<SuccessResponse | ErrorResponse>;
     onSuccess: (result : SuccessResponse) => void;
-    onError: (error : ErrorResponse | String) => void;
+    onError: (error : ErrorResponse | string) => void;
 }

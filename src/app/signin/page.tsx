@@ -25,9 +25,9 @@ export default function SignInPage() {
         setTimeout(() => {
             router.push("/")
         }, 2000)
-    }, [])
+    }, [router])
 
-    const handleError = useCallback((result : ErrorResponse | String) => {
+    const handleError = useCallback((result : ErrorResponse | string) => {
 
         if (typeof result === "string") {
             toast(result)

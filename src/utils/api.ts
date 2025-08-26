@@ -124,7 +124,7 @@ async function getJobs() {
             }
         })
         
-        let data = await res.json();
+        const data = await res.json();
 
         const resData = {status: res.status, data: [...data]};
 
@@ -136,7 +136,7 @@ async function getJobs() {
     }
 }
 
-async function removeUserJob(id : number) {
+async function removeUserJob(id : string) {
 
     try {
         

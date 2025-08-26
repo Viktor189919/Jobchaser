@@ -1,8 +1,6 @@
 import type { NextRequest } from "next/server";
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "@/lib/prisma";
 import { UserJob } from "@/types/jobTypes";
-
-const prisma = new PrismaClient;
 
 export async function POST(req : NextRequest) {
 

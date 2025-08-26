@@ -1,5 +1,5 @@
 import { Jobdata } from "@/types/jobTypes";
-import { FormType } from "@/app/lib/FormSchema";
+import { FormType } from "@/lib/FormSchema";
 
 // These functions communicate directly with the server API routes
 

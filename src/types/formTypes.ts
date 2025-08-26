@@ -1,4 +1,4 @@
-import { FormType } from "@/app/lib/FormSchema";
+import { FormType } from "@/lib/FormSchema";
 import { SuccessResponse, ErrorResponse } from "@/types/apiTypes";
 
 export type FormProps = {

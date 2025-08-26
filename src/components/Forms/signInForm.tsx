@@ -1,6 +1,6 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FormType, FormSchema } from "@/app/lib/FormSchema";
+import { FormType, FormSchema } from "@/lib/FormSchema";
 import { SuccessResponse, ErrorResponse } from "@/types/apiTypes";
 import { FormProps } from "@/types/formTypes";
 import styles from "@/components/Forms/Form.module.css";

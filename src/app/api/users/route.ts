@@ -1,8 +1,6 @@
 import bcrypt from "bcrypt";
 import type { NextRequest } from "next/server";
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient()
+import { prisma } from "@/lib/prisma";
 
 const SALT_ROUNDS = process.env.SALT_ROUNDS || "10";
 
